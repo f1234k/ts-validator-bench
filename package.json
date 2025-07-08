@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@nordic-ui/validathor": "^0.1.0",
     "arktype": "^2.1.20",
     "mqtt": "^5.13.2",
     "perf_hooks": "^0.0.1",
