@@ -3,16 +3,11 @@ import * as v from "valibot";
 import { json_safe_parse } from "../utils";
 import type {
   ErrorCounter,
-  MqttButtonAdv1,
-  MqttButtonAdv4,
-  MqttButtonAdv8,
   MqttCallback,
-  MqttGatewayAdvData,
-  MqttGatewayAlive,
 } from "../types";
 
 const MqttButtonAdv1SchemaValibot = v.object({
-  type: v.number(),
+  type: v.literal(1),
   dmac: v.string(),
   time: v.string(),
   rssi: v.number(),
@@ -27,7 +22,7 @@ const MqttButtonAdv1SchemaValibot = v.object({
 });
 
 const MqttButtonAdv4SchemaValibot = v.object({
-  type: v.number(),
+  type: v.literal(4),
   dmac: v.string(),
   uuid: v.string(),
   majorID: v.number(),
@@ -38,7 +33,7 @@ const MqttButtonAdv4SchemaValibot = v.object({
 });
 
 const MqttButtonAdv8SchemaValibot = v.object({
-  type: v.number(),
+  type: v.literal(8),
   dmac: v.string(),
   vbatt: v.number(),
   temp: v.number(),
@@ -49,7 +44,7 @@ const MqttButtonAdv8SchemaValibot = v.object({
 });
 
 const MqttGatewayAliveSchemaValibot = v.object({
-  msg: v.string(),
+  msg: v.literal("alive"),
   gmac: v.string(),
   ver: v.string(),
   subaction: v.string(),
@@ -76,7 +71,7 @@ const MqttBeaconMessageSchemaValibot = v.union([
 ]);
 
 const MqttGatewayAdvDataSchemaValibot = v.object({
-  msg: v.string(),
+  msg: v.literal("advData"),
   gmac: v.string(),
   obj: v.array(MqttBeaconMessageSchemaValibot),
 });
@@ -106,21 +101,21 @@ export async function process_valibot(
 
   const validatedPayload = result.output;
   if (validatedPayload.msg === "advData") {
-    const payload_adv = validatedPayload as MqttGatewayAdvData;
+    const payload_adv = validatedPayload;
     payload_adv.obj.forEach((obj) => {
       if (obj.type === 1) {
-        callback(payload_adv.gmac, "adv1", obj as MqttButtonAdv1);
+        callback(payload_adv.gmac, "adv1", obj);
       } else if (obj.type === 4) {
-        callback(payload_adv.gmac, "adv4", obj as MqttButtonAdv4);
+        callback(payload_adv.gmac, "adv4", obj);
       } else if (obj.type === 8) {
-        callback(payload_adv.gmac, "adv8", obj as MqttButtonAdv8);
+        callback(payload_adv.gmac, "adv8", obj);
       }
     });
   } else if (validatedPayload.msg === "alive") {
     callback(
       validatedPayload.gmac,
       "alive",
-      validatedPayload as MqttGatewayAlive
+      validatedPayload
     );
   }
 }
