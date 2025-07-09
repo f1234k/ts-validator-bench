@@ -22,13 +22,15 @@ This repo was created at the request of an [X post](https://x.com/FabianHiller/s
 > Notes, key takeaways & thoughts
 > - It took me a bit longer to make @arktypeio work. I don't know why, but their syntax seemed a bit more foreign to me. That being said, I didn't spend any time trying to dive deeply into their tooling.
 > - I used to avoid doing runtime validations because I thought that it will be a huge performance hit (especially with hundreds, scaling up to thousands of messages per second). Apparently I was wrong.
-> - I have no idea if @bunjavascript is to "blame" for the stellar performance by all contenders, but ~ if there is enough interest, I might test it with nodejs.~(2)
+> - I have no idea if @bunjavascript is to "blame" for the stellar performance by all contenders, but ~if there is enough interest, I might test it with nodejs.~(2)
 > - As I understand it, @arktypeio is specifically designed to handle more complex objects and my benchmark might not be a good indication of the gains that you'll get in more complex scenarios.
 > - On the other hand, @valibot values small library size which should make it ideal for the frontend. I will be putting their claims to the test on my next benchmark.
 > - The main takeaway is this: you should (almost) always do runtime validation on the server.
 
 Notes:
+
 (1) Apparently, Zod was being taxed for the initial memory loaded by the script. It still uses more memory than the rest, but not by that much.
+
 (2) There is now a tsx/nodejs benchmark.
 
 ## Future Plans
