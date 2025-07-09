@@ -1,18 +1,13 @@
-import * as v from "@nordic-ui/validathor";
+import * as v from "valibot";
 
-import { json_safe_parse } from "../utils";
+import { json_safe_parse } from "../../helpers/utils";
 import type {
   ErrorCounter,
-  MqttButtonAdv1,
-  MqttButtonAdv4,
-  MqttButtonAdv8,
   MqttCallback,
-  MqttGatewayAdvData,
-  MqttGatewayAlive,
 } from "../types";
 
-const MqttButtonAdv1SchemaValidathor = v.object({
-  type: v.number(),
+const MqttButtonAdv1SchemaValibot = v.object({
+  type: v.literal(1),
   dmac: v.string(),
   time: v.string(),
   rssi: v.number(),
@@ -26,8 +21,8 @@ const MqttButtonAdv1SchemaValidathor = v.object({
   newTHCnt: v.number(),
 });
 
-const MqttButtonAdv4SchemaValidathor = v.object({
-  type: v.number(),
+const MqttButtonAdv4SchemaValibot = v.object({
+  type: v.literal(4),
   dmac: v.string(),
   uuid: v.string(),
   majorID: v.number(),
@@ -37,8 +32,8 @@ const MqttButtonAdv4SchemaValidathor = v.object({
   time: v.string(),
 });
 
-const MqttButtonAdv8SchemaValidathor = v.object({
-  type: v.number(),
+const MqttButtonAdv8SchemaValibot = v.object({
+  type: v.literal(8),
   dmac: v.string(),
   vbatt: v.number(),
   temp: v.number(),
@@ -48,8 +43,8 @@ const MqttButtonAdv8SchemaValidathor = v.object({
   time: v.string(),
 });
 
-const MqttGatewayAliveSchemaValidathor = v.object({
-  msg: v.string(),
+const MqttGatewayAliveSchemaValibot = v.object({
+  msg: v.literal("alive"),
   gmac: v.string(),
   ver: v.string(),
   subaction: v.string(),
@@ -69,24 +64,24 @@ const MqttGatewayAliveSchemaValidathor = v.object({
   state: v.number(),
 });
 
-const MqttBeaconMessageSchemaValidathor = v.union([
-  MqttButtonAdv1SchemaValidathor,
-  MqttButtonAdv4SchemaValidathor,
-  MqttButtonAdv8SchemaValidathor,
+const MqttBeaconMessageSchemaValibot = v.union([
+  MqttButtonAdv1SchemaValibot,
+  MqttButtonAdv4SchemaValibot,
+  MqttButtonAdv8SchemaValibot,
 ]);
 
-const MqttGatewayAdvDataSchemaValidathor = v.object({
-  msg: v.string(),
+const MqttGatewayAdvDataSchemaValibot = v.object({
+  msg: v.literal("advData"),
   gmac: v.string(),
-  obj: v.array(MqttBeaconMessageSchemaValidathor),
+  obj: v.array(MqttBeaconMessageSchemaValibot),
 });
 
-const MqttGatewayMessageSchemaValidathor = v.union([
-  MqttGatewayAdvDataSchemaValidathor,
-  MqttGatewayAliveSchemaValidathor,
+const MqttGatewayMessageSchemaValibot = v.union([
+  MqttGatewayAdvDataSchemaValibot,
+  MqttGatewayAliveSchemaValibot,
 ]);
 
-export async function process_validathor(
+export async function process_valibot(
   message: Buffer,
   callback: MqttCallback,
   errorCounter: ErrorCounter
@@ -98,32 +93,29 @@ export async function process_validathor(
     return;
   }
 
-  let result;
-
-  try {
-    result = MqttGatewayMessageSchemaValidathor.parse(payload);
-  } catch {
+  const result = v.safeParse(MqttGatewayMessageSchemaValibot, payload);
+  if (!result.success) {
     errorCounter.count++;
     return;
   }
 
-  const validatedPayload = result;
+  const validatedPayload = result.output;
   if (validatedPayload.msg === "advData") {
-    const payload_adv = validatedPayload as MqttGatewayAdvData;
+    const payload_adv = validatedPayload;
     payload_adv.obj.forEach((obj) => {
       if (obj.type === 1) {
-        callback(payload_adv.gmac, "adv1", obj as MqttButtonAdv1);
+        callback(payload_adv.gmac, "adv1", obj);
       } else if (obj.type === 4) {
-        callback(payload_adv.gmac, "adv4", obj as MqttButtonAdv4);
+        callback(payload_adv.gmac, "adv4", obj);
       } else if (obj.type === 8) {
-        callback(payload_adv.gmac, "adv8", obj as MqttButtonAdv8);
+        callback(payload_adv.gmac, "adv8", obj);
       }
     });
   } else if (validatedPayload.msg === "alive") {
     callback(
       validatedPayload.gmac,
       "alive",
-      validatedPayload as MqttGatewayAlive
+      validatedPayload
     );
   }
 }

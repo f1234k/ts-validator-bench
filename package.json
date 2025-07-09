@@ -1,11 +1,22 @@
 {
+  "scripts": {
+    "all": "npm run mqtt:test1:npm && bun run mqtt:test1:bun",
+    "mqtt:test1:bun": "bun --bun src/mqtt_test_1/mqtt_test_1.ts",
+    "mqtt:test1:npm": "tsx src/mqtt_test_1/mqtt_test_1.ts"
+  },
   "dependencies": {
-    "@nordic-ui/validathor": "^0.1.0",
+    "@nordic-ui/validathor": "^0.2.0",
     "arktype": "^2.1.20",
+    "dotenv": "^17.1.0",
     "mqtt": "^5.13.2",
     "perf_hooks": "^0.0.1",
     "sury": "^10.0.4",
     "valibot": "^1.1.0",
-    "zod": "^3.25.75"
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.12",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
   }
 }

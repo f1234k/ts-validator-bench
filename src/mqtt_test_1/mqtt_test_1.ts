@@ -1,9 +1,12 @@
+import 'dotenv/config'
 import { performance } from "perf_hooks";
 import * as mqtt from "mqtt";
+import { runtime_info_get } from '../helpers/utils';
 
 import type { MqttConfig, MqttCallback, ErrorCounter } from "./types";
 
 import {
+  process_unvalidated,
   process_validathor,
   process_zod,
   process_valibot,
@@ -100,10 +103,7 @@ async function benchmark(
 
 // ### Display Results in a Table
 function displayResults(results: BenchmarkResult[]) {
-  console.log("\n### Benchmark Results");
-  console.log(
-    "|----------------|---------------|-------------|-----------------|-----------------|-------------|-------------------|"
-  );
+  console.log(`\nBenchmark Results for ${runtime_info_get()} : \n`);
   console.log(
     "| Library        | Msg Processed | Msgs/Second | CPU User (ms)   | CPU System (ms) | Memory (MB) | Validation Errors |"
   );
@@ -126,9 +126,6 @@ function displayResults(results: BenchmarkResult[]) {
         .padEnd(11)} | ${result.validationErrors.toString().padEnd(17)} |`
     );
   });
-  console.log(
-    "|----------------|---------------|-------------|-----------------|-----------------|-------------|-------------------|"
-  );
 }
 
 // ### Main Function
@@ -138,8 +135,14 @@ async function main() {
     mqtt_user: process.env.user as string,
     mqtt_pass: process.env.pass as string,
   };
-
   const results: BenchmarkResult[] = [];
+  console.log("");
+  console.log("### Benchmark MQTT_TEST_1 ###");
+  console.log("=============================");
+
+  console.log("Starting unvalidated benchmark...");
+  results.push(await benchmark("Unvalidated", process_unvalidated, config));
+
 
   console.log("Starting benchmark for Zod...");
   results.push(await benchmark("Zod", process_zod, config));

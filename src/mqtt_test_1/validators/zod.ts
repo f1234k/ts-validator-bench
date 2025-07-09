@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { json_safe_parse } from "../utils";
+import { json_safe_parse } from "../../helpers/utils";
 import type {
   ErrorCounter,
   MqttCallback,
