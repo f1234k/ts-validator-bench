@@ -8,6 +8,7 @@ import {
   process_zod,
   process_valibot,
   process_arktype,
+  process_sury,
 } from "./validators";
 
 // ### MQTT Start Function
@@ -151,6 +152,9 @@ async function main() {
 
   console.log("Starting benchmark for Validathor...");
   results.push(await benchmark("Validathor", process_validathor, config));
+
+  console.log("Starting benchmark for Sury...");
+  results.push(await benchmark("Sury", process_sury, config));
 
   displayResults(results);
 }
