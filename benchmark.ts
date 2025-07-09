@@ -134,9 +134,9 @@ function displayResults(results: BenchmarkResult[]) {
 // ### Main Function
 async function main() {
   const config: MqttConfig = {
-    mqtt_broker: "mqtt://test.example.com:1883",
-    mqtt_user: "test-user",
-    mqtt_pass: "test-password",
+    mqtt_broker: process.env.broker as string,
+    mqtt_user: process.env.user as string,
+    mqtt_pass: process.env.pass as string,
   };
 
   const results: BenchmarkResult[] = [];

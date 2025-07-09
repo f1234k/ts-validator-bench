@@ -54,4 +54,23 @@ You can contribute to this project in a number of ways:
 3. You can always reach me via the [issue queue](https://github.com/f1234k/ts-validator-bench/issues) or my [X Account](https://x.com/NeoterismoiTaki).
 
 ## Results
-![Benchmark Results](img/Jul8_2025.png)
+
+| Library        | Msg Processed | Msgs/Second | CPU User (ms)   | CPU System (ms) | Memory (MB) | Validation Errors |
+|----------------|---------------|-------------|-----------------|-----------------|-------------|-------------------|
+| Zod            | 29768         | 495.82      | 10040.97        | 1581.92         | 39.70       | 81                |
+| Valibot        | 29899         | 498.30      | 9512.87         | 1739.89         | -8.90       | 69                |
+| ArkType        | 29758         | 495.90      | 9576.08         | 1812.77         | 1.39        | 84                |
+| Validathor     | 30048         | 500.78      | 11137.29        | 1664.20         | 1.03        | 79                |
+| Sury           | 29479         | 491.30      | 9601.54         | 1816.72         | 2.71        | 90                |
+
+![Benchmark Results](img/Bun_Backend_09072025_Sury.png)
+
+### Notes
+
+1. Don't pay too much atttention to the exact amount of messages or validation errors. Since this is
+  a real-life scenario, the number of messages that are broadcasted by the MQTT server can vary in a
+  1-minute window. Same goes for Validation errors. If you see a library having processed around 500
+  messages, it means that it has handled all messages with ease.
+2. The RAM usage may be negative. This practically means that when the specific library's run
+  started, there was some memory being used from the previous library's run that got garbage 
+  collected.
