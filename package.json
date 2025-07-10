@@ -5,7 +5,7 @@
     "mqtt:test1:npm": "tsx src/mqtt_test_1/mqtt_test_1.ts"
   },
   "dependencies": {
-    "@nordic-ui/validathor": "^0.2.0",
+    "@nordic-ui/validathor": "^0.3.1",
     "arktype": "^2.1.20",
     "dotenv": "^17.1.0",
     "mqtt": "^5.13.2",

@@ -3,7 +3,7 @@
   "workspaces": {
     "": {
       "dependencies": {
-        "@nordic-ui/validathor": "^0.2.0",
+        "@nordic-ui/validathor": "^0.3.1",
         "arktype": "^2.1.20",
         "dotenv": "^17.1.0",
         "mqtt": "^5.13.2",
@@ -78,7 +78,7 @@
 
     "@esbuild/win32-x64": ["@esbuild/win32-x64@0.25.6", "", { "os": "win32", "cpu": "x64" }, "sha512-NgJPHHbEpLQgDH2MjQu90pzW/5vvXIZ7KOnPyNBm92A6WgZ/7b6fJyUBjoumLqeOQQGqY2QjQxRo97ah4Sj0cA=="],
 
-    "@nordic-ui/validathor": ["@nordic-ui/validathor@0.2.0", "", {}, "sha512-ZygK45CWaCGBqa3Mjwz6lxzkQFvDXtT9/Q6YbkXu1wYdm9haRHSACgHT1EkAWxqZxkOieYSAgmr1xC3yygnETw=="],
+    "@nordic-ui/validathor": ["@nordic-ui/validathor@0.3.1", "", {}, "sha512-ZwRES1cEMrOjpt0wQ0QVJSF05iiVneKPGdPpIKuFzCzZLZ8pB5/TeL4GLOOlGw97QQYr9oMJM6gyNYd+WKUbLQ=="],
 
     "@types/node": ["@types/node@24.0.12", "", { "dependencies": { "undici-types": "~7.8.0" } }, "sha512-LtOrbvDf5ndC9Xi+4QZjVL0woFymF/xSTKZKPgrrl7H7XoeDvnD+E2IclKVDyaK9UM756W/3BXqSU+JEHopA9g=="],
 
